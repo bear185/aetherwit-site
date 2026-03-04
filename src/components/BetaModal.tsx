@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, CheckCircle } from "lucide-react";
+import { X, Send, CheckCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useForm, ValidationError } from "@formspree/react";
+import { supabase } from "@/lib/supabase";
 
 interface BetaModalProps {
   isOpen: boolean;
@@ -12,14 +12,36 @@ interface BetaModalProps {
 
 export function BetaModal({ isOpen, onClose }: BetaModalProps) {
   const [submitted, setSubmitted] = useState(false);
-  
-  // TODO: Replace 'YOUR_FORMSPREE_ID' with your actual Formspree ID
-  // Get your free form ID at https://formspree.io/
-  const [state, handleSubmit] = useForm("YOUR_FORMSPREE_ID");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    await handleSubmit(e);
-    if (state.succeeded) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const message = formData.get("message") as string;
+
+    const { error: supabaseError } = await supabase
+      .from("beta_signups")
+      .insert([
+        {
+          name,
+          email,
+          message,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+    setLoading(false);
+
+    if (supabaseError) {
+      console.error("Error submitting form:", supabaseError);
+      setError("提交失败，请稍后重试。");
+    } else {
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
@@ -85,7 +107,6 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
                         className="w-full bg-transparent border border-[var(--border-color)] rounded-lg px-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                         placeholder="your@email.com"
                       />
-                      <ValidationError prefix="Email" field="email" errors={state.errors} />
                     </div>
 
                     <div>
@@ -98,15 +119,22 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
                       />
                     </div>
 
+                    {error && (
+                      <p className="text-red-500 text-sm font-mono">{error}</p>
+                    )}
+
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
-                      disabled={state.submitting}
+                      disabled={loading}
                       className="w-full mt-4 flex items-center justify-center gap-2 bg-[var(--color-silicon)] text-[var(--background)] font-bold font-mono px-8 py-4 rounded-lg uppercase tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
-                      {state.submitting ? (
-                        "Transmitting..."
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Submitting...
+                        </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />

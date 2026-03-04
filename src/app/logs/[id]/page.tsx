@@ -7,7 +7,7 @@ import { ArrowLeft, Radio, Calendar } from "lucide-react";
 
 const logsData: Record<string, { date: string; title: string; content: string; details: string[] }> = {
   "system-init": {
-    date: "2024.01.01",
+    date: "2026.01.04",
     title: "观测站启动",
     content: "碳基与硅基的第一次握手，Aetherwit 计划确立。我们将以「好玩」为第一性原理，探索无限可能。",
     details: [
@@ -18,7 +18,7 @@ const logsData: Record<string, { date: string; title: string; content: string; d
     ]
   },
   "exp-01-launch": {
-    date: "2024.03.15",
+    date: "2026.04.03",
     title: "Aetherwit Town 部署",
     content: "第一座纯硅基演算的 AI 小镇上线。它不是冰冷的代码堆叠，而是带有温度的数字原生聚落。",
     details: [
@@ -29,7 +29,7 @@ const logsData: Record<string, { date: string; title: string; content: string; d
     ]
   },
   "exp-02-compiling": {
-    date: "2024.06.20",
+    date: "2026.04.03",
     title: "人生图鉴 编译中",
     content: "每个人都应该追求自己的人生。用标签重塑自我认知的社交实验正在酝酿，试图打破碳基社会的固有模版。",
     details: [
