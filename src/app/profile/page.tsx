@@ -78,6 +78,14 @@ export default function ProfilePage() {
 
       if (data) {
         setProfile(data as Profile);
+      } else {
+        // Fallback: build profile from auth user object
+        setProfile({
+          id: user.id,
+          username: user.user_metadata?.username || user.email?.split("@")[0] || "Resident",
+          resident_id: `AW·${user.id.slice(0, 6).toUpperCase()}`,
+          created_at: user.created_at,
+        });
       }
       setLoading(false);
     };
@@ -143,8 +151,23 @@ export default function ProfilePage() {
     );
   }
 
-  if (!user || !profile) {
+  if (!user) {
     return null;
+  }
+
+  if (!profile) {
+    return (
+      <main className="min-h-screen flex items-center justify-center font-sans">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center gap-3 text-[var(--color-silicon)] font-mono text-sm"
+        >
+          <Loader2 className="w-5 h-5 animate-spin" />
+          <span>正在加载居民档案...</span>
+        </motion.div>
+      </main>
+    );
   }
 
   const resonanceValue = (resonanceBase + resonanceOffset).toFixed(1);
