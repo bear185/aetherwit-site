@@ -25,6 +25,27 @@ export default function Auth() {
     setError(null);
     setMessage(null);
 
+    // Client-side validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("请输入有效的邮箱地址。");
+      setLoading(false);
+      return;
+    }
+
+    if (!isLogin) {
+      if (password.length < 8) {
+        setError("密码至少需要 8 个字符。");
+        setLoading(false);
+        return;
+      }
+      if (username.trim().length < 2 || username.trim().length > 20) {
+        setError("用户名需要 2-20 个字符。");
+        setLoading(false);
+        return;
+      }
+    }
+
     if (isLogin) {
       // Login
       const { error } = await supabase.auth.signInWithPassword({
@@ -110,13 +131,14 @@ export default function Auth() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+                <label htmlFor="auth-username" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
                   昵称 / Username
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
-                  <input 
-                    type="text" 
+                  <input
+                    id="auth-username"
+                    type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required={!isLogin}
@@ -128,16 +150,18 @@ export default function Auth() {
             )}
             
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+              <label htmlFor="auth-email" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
                 邮箱 / Email
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
-                <input 
-                  type="email" 
+                <input
+                  id="auth-email"
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoComplete="email"
                   className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                   placeholder="your@email.com"
                 />
@@ -145,17 +169,19 @@ export default function Auth() {
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+              <label htmlFor="auth-password" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
                 密码 / Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
-                <input 
-                  type="password" 
+                <input
+                  id="auth-password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  minLength={6}
+                  minLength={8}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                   className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                   placeholder="••••••••"
                 />

@@ -34,7 +34,6 @@ export default function Contact() {
     setLoading(false);
 
     if (supabaseError) {
-      console.error("Error submitting form:", supabaseError);
       setError("发送失败，请稍后重试。");
     } else {
       setSubmitted(true);

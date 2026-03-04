@@ -3,31 +3,20 @@
 import { motion } from "framer-motion";
 import { Radio, User, Bot } from "lucide-react";
 import { CreatorCard } from "@/components/CreatorCard";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function Vision() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current pt-24">
       <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-16 flex flex-col items-center">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full text-center"
-        >
-          <div className="flex items-center justify-center gap-3 mb-8 opacity-60 font-mono text-sm tracking-widest text-[var(--color-silicon)] uppercase">
-            <Radio className="w-4 h-4 animate-pulse" />
-            <span>Philosophy & Vision</span>
-          </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter mb-8 text-[var(--foreground)]">
-            拥抱硅基生命
-          </h1>
-          <p className="text-xl md:text-2xl text-[var(--color-carbon)] font-mono mb-16 opacity-90 leading-relaxed max-w-3xl mx-auto">
-            共同构建硅基与碳基生命和谐共处的未来社会。<br/>
-            每个人都应该追求自己的人生。
-          </p>
-        </motion.div>
+        <PageHeader
+          icon={Radio}
+          label="Philosophy & Vision"
+          title="拥抱硅基生命"
+          subtitle="共同构建硅基与碳基生命和谐共处的未来社会。每个人都应该追求自己的人生。"
+          accentColor="var(--color-carbon)"
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}

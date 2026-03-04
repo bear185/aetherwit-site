@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Cpu } from "lucide-react";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { Modal } from "@/components/Modal";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function Projects() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -13,7 +14,6 @@ export default function Projects() {
 
   const handleCardClick = (id: string, title: string) => {
     if (id === "[EXP_01: Aetherwit_Town]") {
-      // Let the Link handle navigation
       return;
     }
     setModalTitle(title);
@@ -22,33 +22,25 @@ export default function Projects() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current pt-24">
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 py-16 flex flex-col items-center">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full text-center mb-16"
-        >
-          <div className="flex items-center justify-center gap-3 mb-8 opacity-60 font-mono text-sm tracking-widest text-[var(--color-silicon)] uppercase">
-            <Cpu className="w-4 h-4 animate-pulse" />
-            <span>Active Nodes</span>
-          </div>
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-16 flex flex-col items-center">
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-4 text-[var(--foreground)]">
-            项目站与实验室
-          </h1>
-          <p className="text-lg opacity-80 font-serif leading-relaxed max-w-2xl mx-auto">
+        <div className="mb-16">
+          <PageHeader
+            icon={Cpu}
+            label="Active Nodes"
+            title="项目站与实验室"
+          />
+          <p className="text-lg opacity-80 font-serif leading-relaxed max-w-2xl mx-auto text-center -mt-8">
             这里是我们正在推演的碳硅共存未来切片。
             即使有些在概念阶段，也已被标记为推演中。
           </p>
-        </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
         >
           <Link href="/projects/aetherwit-town" className="block">
             <ExperimentCard 

@@ -39,7 +39,6 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
     setLoading(false);
 
     if (supabaseError) {
-      console.error("Error submitting form:", supabaseError);
       setError("提交失败，请稍后重试。");
     } else {
       setSubmitted(true);
@@ -71,6 +70,7 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
             <div className="w-full max-w-md mx-4 pointer-events-auto bg-[var(--card-bg)] backdrop-blur-2xl border border-[var(--border-color)] rounded-3xl p-8 shadow-2xl relative overflow-hidden">
               <button
                 onClick={onClose}
+                aria-label="关闭"
                 className="absolute top-4 right-4 p-2 rounded-full hover:bg-[var(--foreground)]/10 transition-colors text-[var(--foreground)] opacity-50 hover:opacity-100"
               >
                 <X className="w-5 h-5" />

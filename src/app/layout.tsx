@@ -23,8 +23,23 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Aetherwit | AGI Playground",
-  description: "Aetherwit is a two-person & AI lab. AGI playground for the future.",
+  title: {
+    default: "Aetherwit | AGI Playground",
+    template: "%s | Aetherwit",
+  },
+  description: "Aetherwit 是一个两人 & AI 实验室。碳硅共生的 AGI 游乐场。",
+  metadataBase: new URL("https://aetherwit.com"),
+  openGraph: {
+    title: "Aetherwit | AGI Playground",
+    description: "碳硅共生的 AGI 游乐场",
+    siteName: "Aetherwit",
+    locale: "zh_CN",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

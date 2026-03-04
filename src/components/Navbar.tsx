@@ -80,9 +80,11 @@ export function Navbar() {
             )}
           </div>
 
-          <button 
+          <button
             className="md:hidden flex items-center justify-center text-[var(--foreground)] opacity-80 ml-2"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "关闭菜单" : "打开菜单"}
+            aria-expanded={isOpen}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
