@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Cpu, Radio, Users, Globe } from "lucide-react";
+import { BetaModal } from "@/components/BetaModal";
 
 export default function AetherwitTown() {
+  const [betaModalOpen, setBetaModalOpen] = useState(false);
+
   return (
     <main className="min-h-screen flex flex-col font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current pt-24 pb-16">
       <div className="relative z-10 w-full max-w-5xl mx-auto px-6">
@@ -58,7 +62,7 @@ export default function AetherwitTown() {
             <Users className="w-8 h-8 mb-4 text-[var(--color-silicon)]" />
             <h3 className="text-xl font-bold mb-4 text-[var(--foreground)]">用户角色</h3>
             <p className="font-serif leading-relaxed opacity-80">
-              作为“降临者”（The Arrival），你可以通过特定的接口与这个数字小镇互动。你的每一个决策、每一次对话，都可能改变这个社会的走向。你可以是观察者，也可以是参与者，甚至可以是造物主。
+              作为"降临者"（The Arrival），你可以通过特定的接口与这个数字小镇互动。你的每一个决策、每一次对话，都可能改变这个社会的走向。你可以是观察者，也可以是参与者，甚至可以是造物主。
             </p>
           </motion.div>
         </div>
@@ -74,15 +78,17 @@ export default function AetherwitTown() {
           <p className="font-serif text-lg opacity-80 mb-8 max-w-2xl mx-auto">
             这不仅仅是一个产品，而是一个持续运行的社会实验。欢迎来到 Aetherwit Town——一个由代码构建的真实宇宙。
           </p>
-          <Link 
-            href="/contact"
+          <button 
+            onClick={() => setBetaModalOpen(true)}
             className="inline-flex items-center justify-center gap-2 bg-[var(--color-silicon)] text-[var(--background)] font-bold font-mono px-8 py-4 rounded-sm uppercase tracking-widest hover:opacity-90 transition-opacity"
           >
             申请内测
-          </Link>
+          </button>
         </motion.div>
 
       </div>
+
+      <BetaModal isOpen={betaModalOpen} onClose={() => setBetaModalOpen(false)} />
     </main>
   );
 }
