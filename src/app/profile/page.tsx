@@ -70,7 +70,7 @@ export default function ProfilePage() {
 
     const fetchProfile = async () => {
       const supabase = createClient();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
@@ -79,11 +79,20 @@ export default function ProfilePage() {
       if (data) {
         setProfile(data as Profile);
       } else {
-        // Fallback: build profile from auth user object
-        setProfile({
+        // Profile missing in DB — create it now, matching the registration format
+        const residentId = `AW·${Date.now().toString().slice(-6)}·${user.id.slice(0, 4).toUpperCase()}`;
+        const username = user.user_metadata?.username || user.email?.split("@")[0] || "Resident";
+
+        const { data: created } = await supabase.from("profiles").upsert({
           id: user.id,
-          username: user.user_metadata?.username || user.email?.split("@")[0] || "Resident",
-          resident_id: `AW·${user.id.slice(0, 6).toUpperCase()}`,
+          username,
+          resident_id: residentId,
+        }).select().single();
+
+        setProfile(created as Profile ?? {
+          id: user.id,
+          username,
+          resident_id: residentId,
           created_at: user.created_at,
         });
       }
