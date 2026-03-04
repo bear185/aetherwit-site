@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-border-subtle: var(--border-color);
+  
+  --color-silicon: var(--color-silicon);
+  --color-carbon: var(--color-carbon);
+  --color-ai: var(--color-ai);
+  
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  /* Light Mode (Warm & Tech) */
+  --background: #FDFBF7; 
+  --foreground: #1A1D27;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(0, 0, 0, 0.08);
+  
+  --color-silicon: #0088CC; /* Tech blue for light mode */
+  --color-carbon: #FF6B00;  /* Warm orange */
+  --color-ai: #8B5CF6;      /* Tech purple */
+}
+
+.dark {
+  /* Dark Mode (Deep Space) */
+  --background: #0F121C;
+  --foreground: #FDFCF5;
+  --card-bg: rgba(18, 22, 34, 0.6);
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  --color-silicon: #00FFD1;
+  --color-carbon: #FFB000;
+  --color-ai: #B026FF;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Effects */
+.terminal-cursor {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.glow-hover {
+  transition: text-shadow 0.3s ease-in-out;
+}
+
+.glow-hover:hover {
+  text-shadow: 0 0 12px var(--color-silicon), 0 0 20px var(--color-silicon);
+}
+
+/* Breathing animation */
+@keyframes breath {
+  0% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.6; transform: scale(1); }
+}
+
+.animate-breath {
+  animation: breath 6s ease-in-out infinite;
+}
+
+@keyframes fluid {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+.animate-fluid {
+  animation: fluid 10s ease-in-out infinite;
+}
+
+.scanline {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    var(--border-color) 50%,
+    var(--border-color)
+  );
+  background-size: 100% 4px;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.15;
+}
+
+/* Spotlight masking */
+.spotlight-mask {
+  mask-image: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    black 0%,
+    black 15%,
+    transparent 40%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    black 0%,
+    black 15%,
+    transparent 40%
+  );
+}
