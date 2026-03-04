@@ -10,16 +10,12 @@ export default function Logs() {
     <main className="min-h-screen flex flex-col items-center justify-center font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current pt-24">
       <div className="relative z-10 w-full max-w-4xl mx-auto px-6 py-16 flex flex-col items-center">
 
-        <div className="mb-16">
-          <PageHeader
-            icon={Radio}
-            label="Build in Public"
-            title="观测日志"
-          />
-          <p className="text-lg opacity-80 font-serif leading-relaxed max-w-2xl mx-auto text-center -mt-8">
-            记录平行宇宙的生长切片。这里是我们作为观测员的所有系统广播。
-          </p>
-        </div>
+        <PageHeader
+          icon={Radio}
+          label="Build in Public"
+          title="观测日志"
+          subtitle="记录平行宇宙的生长切片。这里是我们作为观测员的所有系统广播。"
+        />
 
         <motion.div
           initial={{ opacity: 0 }}

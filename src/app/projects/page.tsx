@@ -24,17 +24,12 @@ export default function Projects() {
     <main className="min-h-screen flex flex-col items-center justify-center font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current pt-24">
       <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-16 flex flex-col items-center">
 
-        <div className="mb-16">
-          <PageHeader
-            icon={Cpu}
-            label="Active Nodes"
-            title="项目站与实验室"
-          />
-          <p className="text-lg opacity-80 font-serif leading-relaxed max-w-2xl mx-auto text-center -mt-8">
-            这里是我们正在推演的碳硅共存未来切片。
-            即使有些在概念阶段，也已被标记为推演中。
-          </p>
-        </div>
+        <PageHeader
+          icon={Cpu}
+          label="Active Nodes"
+          title="项目站与实验室"
+          subtitle="这里是我们正在推演的碳硅共存未来切片。即使有些在概念阶段，也已被标记为推演中。"
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
