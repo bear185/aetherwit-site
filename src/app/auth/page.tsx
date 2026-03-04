@@ -209,6 +209,17 @@ export default function Auth() {
             </motion.button>
           </form>
 
+          {isLogin && (
+            <div className="mt-4 text-center">
+              <Link
+                href="/auth/forgot-password"
+                className="text-xs font-mono text-[var(--color-carbon)] hover:underline underline-offset-4"
+              >
+                忘记密码？
+              </Link>
+            </div>
+          )}
+
           <div className="mt-8 text-center">
             <button
               onClick={() => {
