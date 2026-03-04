@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -37,10 +38,12 @@ export default function RootLayout({
         className={`${inter.variable} ${notoSerif.variable} ${firaCode.variable} antialiased min-h-screen relative selection:bg-[var(--color-silicon)]/30 selection:text-current`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="scanline"></div>
-          <Navbar />
-          <ThemeToggle />
-          {children}
+          <AuthProvider>
+            <div className="scanline"></div>
+            <Navbar />
+            <ThemeToggle />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

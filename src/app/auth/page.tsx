@@ -1,0 +1,211 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Terminal, Mail, Lock, User, ArrowRight, Loader2, UserPlus } from "lucide-react";
+import { createClient } from "@/lib/supabase-browser";
+
+export default function Auth() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setMessage(null);
+
+    if (isLogin) {
+      // Login
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push("/");
+        router.refresh();
+      }
+    } else {
+      // Register
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+          },
+        },
+      });
+
+      if (signUpError) {
+        setError(signUpError.message);
+      } else {
+        if (data.user) {
+          // Create profile manually if trigger doesn't work
+          await supabase.from("profiles").upsert({
+            id: data.user.id,
+            username,
+            resident_id: `AW·${Date.now().toString().slice(-6)}·${data.user.id.slice(0, 4).toUpperCase()}`,
+          });
+        }
+        
+        setMessage("注册成功！请检查邮箱确认链接，然后登录。");
+        setIsLogin(true);
+      }
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center font-sans relative overflow-x-hidden selection:bg-[var(--color-silicon)]/20 selection:text-current">
+      <div className="relative z-10 w-full max-w-md mx-auto px-6 py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-full bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] p-8 rounded-3xl shadow-xl relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-silicon)]/10 rounded-full blur-[80px] -z-10"></div>
+          
+          <div className="flex items-center gap-3 mb-8 text-[var(--color-silicon)] font-mono text-sm tracking-widest uppercase">
+            <Terminal className="w-4 h-4" />
+            <span>Identity Protocol</span>
+          </div>
+
+          <h1 className="text-3xl font-black tracking-tighter mb-2 text-[var(--foreground)]">
+            {isLogin ? "登录 (Login)" : "注册 (Register)"}
+          </h1>
+          <p className="text-sm opacity-60 mb-8 font-serif">
+            {isLogin 
+              ? "欢迎回来，碳基生命。" 
+              : "成为 Aetherwit 宇宙的第一批居民。"}
+          </p>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+              <p className="text-red-500 text-sm font-mono">{error}</p>
+            </div>
+          )}
+
+          {message && (
+            <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+              <p className="text-green-500 text-sm font-mono">{message}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+                  昵称 / Username
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
+                  <input 
+                    type="text" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required={!isLogin}
+                    className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
+                    placeholder="Choose a username"
+                  />
+                </div>
+              </div>
+            )}
+            
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+                邮箱 / Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
+                  placeholder="your@email.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
+                密码 / Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full mt-6 flex items-center justify-center gap-2 bg-[var(--color-silicon)] text-[var(--background)] font-bold font-mono px-8 py-4 rounded-lg uppercase tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  {isLogin ? "接入 (Login)" : "注册 (Register)"}
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </motion.button>
+          </form>
+
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError(null);
+                setMessage(null);
+              }}
+              className="text-sm font-mono text-[var(--color-silicon)] hover:underline underline-offset-4"
+            >
+              {isLogin ? (
+                <>没有账号？<span className="font-bold">立即注册</span></>
+              ) : (
+                <>已有账号？<span className="font-bold">立即登录</span></>
+              )}
+            </button>
+          </div>
+
+        </motion.div>
+
+        <Link href="/" className="block text-center mt-8 text-sm font-mono opacity-40 hover:opacity-100 transition-opacity">
+          ← 返回首页
+        </Link>
+      </div>
+    </main>
+  );
+}
