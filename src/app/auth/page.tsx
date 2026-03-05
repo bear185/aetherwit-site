@@ -4,8 +4,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Terminal, Mail, Lock, User, ArrowRight, Loader2, UserPlus } from "lucide-react";
+import { Terminal, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
+import { createUserProfile } from "@/actions/profile";
+import { isValidEmail, sanitizeText } from "@/lib/utils";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -25,9 +27,7 @@ export default function Auth() {
     setError(null);
     setMessage(null);
 
-    // Client-side validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       setError("请输入有效的邮箱地址。");
       setLoading(false);
       return;
@@ -39,15 +39,15 @@ export default function Auth() {
         setLoading(false);
         return;
       }
-      if (username.trim().length < 2 || username.trim().length > 20) {
-        setError("用户名需要 2-20 个字符。");
+      const cleanUsername = sanitizeText(username, 50);
+      if (!cleanUsername || cleanUsername.length < 2) {
+        setError("用户名需要 2-50 个字符。");
         setLoading(false);
         return;
       }
     }
 
     if (isLogin) {
-      // Login
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -60,13 +60,12 @@ export default function Auth() {
         router.refresh();
       }
     } else {
-      // Register
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            username,
+            username: sanitizeText(username, 50),
           },
         },
       });
@@ -75,12 +74,12 @@ export default function Auth() {
         setError(signUpError.message);
       } else {
         if (data.user) {
-          // Create profile manually if trigger doesn't work
-          await supabase.from("profiles").upsert({
-            id: data.user.id,
-            username,
-            resident_id: `AW·${Date.now().toString().slice(-6)}·${data.user.id.slice(0, 4).toUpperCase()}`,
-          });
+          // Create profile via Server Action (moved to server-side)
+          const profileResult = await createUserProfile(data.user.id, username);
+          if (!profileResult.success) {
+            console.error("Profile creation failed:", profileResult.error);
+            // Don't block signup, but log the error
+          }
         }
         
         setMessage("注册成功！请检查邮箱确认链接，然后登录。");
@@ -142,6 +141,8 @@ export default function Auth() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required={!isLogin}
+                    minLength={2}
+                    maxLength={50}
                     className="w-full bg-transparent border border-[var(--border-color)] rounded-lg pl-11 pr-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                     placeholder="Choose a username"
                   />

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F121C"/>
+      <stop offset="100%" style="stop-color:#1A1D27"/>
+    </linearGradient>
+    <linearGradient id="silicon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FFD1"/>
+      <stop offset="100%" style="stop-color:#0088CC"/>
+    </linearGradient>
+    <linearGradient id="carbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB000"/>
+      <stop offset="100%" style="stop-color:#FF6B00"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Title -->
+  <text x="600" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white">
+    Aetherwit
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#00FFD1">
+    碳硅共生的 AGI 游乐场
+  </text>
+  
+  <!-- Decorative circles -->
+  <circle cx="200" cy="200" r="80" fill="url(#silicon)" opacity="0.2"/>
+  <circle cx="1000" cy="430" r="100" fill="url(#carbon)" opacity="0.2"/>
+  
+  <!-- Bottom tagline -->
+  <text x="600" y="550" text-anchor="middle" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.5)">
+    拥抱硅基生命 · 每个人都应该追求自己的人生
+  </text>
+</svg>

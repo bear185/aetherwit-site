@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Terminal, Send, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { submitContactMessage } from "@/actions/contact";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -16,27 +16,15 @@ export default function Contact() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
 
-    const { error: supabaseError } = await supabase
-      .from("contact_messages")
-      .insert([
-        {
-          name,
-          email,
-          message,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+    const result = await submitContactMessage(formData);
 
     setLoading(false);
 
-    if (supabaseError) {
-      setError("发送失败，请稍后重试。");
-    } else {
+    if (result.success) {
       setSubmitted(true);
+    } else {
+      setError(result.error || "发送失败，请稍后重试。");
     }
   };
 
@@ -85,6 +73,7 @@ export default function Contact() {
                     type="text" 
                     name="name"
                     required
+                    maxLength={100}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-silicon)] py-2 outline-none transition-colors text-[var(--foreground)]" 
                     placeholder="Enter your designator" 
                   />
@@ -96,6 +85,7 @@ export default function Contact() {
                     type="email" 
                     name="email"
                     required
+                    maxLength={255}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-carbon)] py-2 outline-none transition-colors text-[var(--foreground)]" 
                     placeholder="Where to send response" 
                   />
@@ -107,6 +97,8 @@ export default function Contact() {
                     name="message"
                     rows={4} 
                     required
+                    minLength={10}
+                    maxLength={2000}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-ai)] py-2 outline-none transition-colors resize-none text-[var(--foreground)]" 
                     placeholder="Transmit your ideas..." 
                   ></textarea>

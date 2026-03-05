@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Noto_Serif, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
@@ -35,6 +36,21 @@ export const metadata: Metadata = {
     siteName: "Aetherwit",
     locale: "zh_CN",
     type: "website",
+    url: "https://aetherwit.com",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Aetherwit - 碳硅共生的 AGI 游乐场",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aetherwit | AGI Playground",
+    description: "碳硅共生的 AGI 游乐场",
+    images: ["/og-image.svg"],
   },
   robots: {
     index: true,
@@ -48,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${notoSerif.variable} ${firaCode.variable} antialiased min-h-screen relative selection:bg-[var(--color-silicon)]/30 selection:text-current`}
       >
@@ -57,7 +73,10 @@ export default function RootLayout({
             <div className="scanline"></div>
             <Navbar />
             <ThemeToggle />
-            {children}
+            <div className="flex flex-col min-h-screen">
+              <div className="flex-grow">{children}</div>
+              <Footer />
+            </div>
           </AuthProvider>
         </ThemeProvider>
       </body>

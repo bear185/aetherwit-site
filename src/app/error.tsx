@@ -10,7 +10,12 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Optionally log to an error reporting service
+    // Log error details for debugging
+    console.error("[Aetherwit Error]", {
+      message: error.message,
+      digest: error.digest,
+      stack: error.stack,
+    });
   }, [error]);
 
   return (

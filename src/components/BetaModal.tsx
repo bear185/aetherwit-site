@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, CheckCircle, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
+import { submitBetaSignup } from "@/actions/beta-signup";
 
 interface BetaModalProps {
   isOpen: boolean;
@@ -15,37 +15,45 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Reset state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSubmitted(false);
+      setError(null);
+    }
+  }, [isOpen]);
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
 
-    const { error: supabaseError } = await supabase
-      .from("beta_signups")
-      .insert([
-        {
-          name,
-          email,
-          message,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+    const result = await submitBetaSignup(formData);
 
     setLoading(false);
 
-    if (supabaseError) {
-      setError("提交失败，请稍后重试。");
-    } else {
+    if (result.success) {
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
         onClose();
       }, 3000);
+    } else {
+      setError(result.error || "提交失败，请稍后重试。");
     }
   };
 
@@ -93,6 +101,8 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
                         type="text" 
                         name="name"
                         required
+                        minLength={2}
+                        maxLength={100}
                         className="w-full bg-transparent border border-[var(--border-color)] rounded-lg px-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                         placeholder="Enter your nickname"
                       />
@@ -104,6 +114,7 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
                         type="email" 
                         name="email"
                         required
+                        maxLength={255}
                         className="w-full bg-transparent border border-[var(--border-color)] rounded-lg px-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)]"
                         placeholder="your@email.com"
                       />
@@ -114,6 +125,7 @@ export function BetaModal({ isOpen, onClose }: BetaModalProps) {
                       <textarea 
                         name="message"
                         rows={3}
+                        maxLength={1000}
                         className="w-full bg-transparent border border-[var(--border-color)] rounded-lg px-4 py-3 focus:border-[var(--color-silicon)] outline-none transition-colors text-[var(--foreground)] resize-none"
                         placeholder="Why do you want to join?"
                       />

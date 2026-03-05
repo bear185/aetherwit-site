@@ -2,39 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-
-interface LogEntry {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-}
-
-const logs: LogEntry[] = [
-  {
-    id: "system-init",
-    date: "SYSTEM_INIT",
-    title: "观测站启动",
-    description: "碳基与硅基的第一次握手，Aetherwit 计划确立。我们将以「好玩」为第一性原理，探索无限可能。"
-  },
-  {
-    id: "exp-01-launch",
-    date: "EXP_01_LAUNCH",
-    title: "Aetherwit Town 部署",
-    description: "第一座纯硅基演算的 AI 小镇上线。它不是冰冷的代码堆叠，而是带有温度的数字原生聚落。"
-  },
-  {
-    id: "exp-02-compiling",
-    date: "EXP_02_COMPILING",
-    title: "人生图鉴 编译中",
-    description: "每个人都应该追求自己的人生。用标签重塑自我认知的社交实验正在酝酿，试图打破碳基社会的固有模版。"
-  }
-];
+import { logEntries } from "@/data/logs";
 
 export function Timeline() {
   return (
     <div className="relative border-l border-[var(--border-color)] ml-4 py-4 space-y-12">
-      {logs.map((log, index) => (
+      {logEntries.map((log, index) => (
         <Link href={`/logs/${log.id}`} key={log.id}>
           <motion.div 
             initial={{ opacity: 0, x: -20 }}

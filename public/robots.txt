@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow sensitive routes
+Disallow: /auth/
+Disallow: /profile/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://aetherwit.com/sitemap.xml

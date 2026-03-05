@@ -6,54 +6,23 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Terminal,
-  Shield,
-  Activity,
-  Clock,
-  Fingerprint,
-  Signal,
-  LogOut,
-  Cpu,
-  Loader2,
   Lock,
+  LogOut,
+  Loader2,
   X,
-  User,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { createClient } from "@/lib/supabase-browser";
+import { getResonanceBase } from "@/lib/utils";
+import { IdentityCard } from "@/components/profile/IdentityCard";
+import { StatusDashboard } from "@/components/profile/StatusDashboard";
+import { FrequencyVisualization } from "@/components/profile/FrequencyVisualization";
 
 interface Profile {
   id: string;
   username: string;
   resident_id: string;
   created_at?: string;
-}
-
-// Generate a deterministic hash from a string
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
-// Generate unique frequency bar heights from resident_id
-function generateFrequencyBars(id: string, count: number = 48): number[] {
-  const bars: number[] = [];
-  const base = hashCode(id);
-  for (let i = 0; i < count; i++) {
-    const seed = Math.sin(base * (i + 1) * 0.017) * 10000;
-    const normalized = ((seed - Math.floor(seed)) * 0.7) + 0.15; // 15% - 85% height
-    bars.push(normalized);
-  }
-  return bars;
-}
-
-// Generate a "resonance index" from resident_id (deterministic but looks dynamic)
-function getResonanceBase(id: string): number {
-  const h = hashCode(id);
-  return 60 + (h % 30); // 60-89 base range
 }
 
 export default function ProfilePage() {
@@ -88,20 +57,10 @@ export default function ProfilePage() {
       if (data) {
         setProfile(data as Profile);
       } else {
-        // Profile missing in DB — create it now, matching the registration format
-        const residentId = `AW·${Date.now().toString().slice(-6)}·${user.id.slice(0, 4).toUpperCase()}`;
-        const username = user.user_metadata?.username || user.email?.split("@")[0] || "Resident";
-
-        const { data: created } = await supabase.from("profiles").upsert({
+        setProfile({
           id: user.id,
-          username,
-          resident_id: residentId,
-        }).select().single();
-
-        setProfile(created as Profile ?? {
-          id: user.id,
-          username,
-          resident_id: residentId,
+          username: user.user_metadata?.username || user.email?.split("@")[0] || "Resident",
+          resident_id: `AW·${Date.now().toString().slice(-6)}·${user.id.slice(0, 4).toUpperCase()}`,
           created_at: user.created_at,
         });
       }
@@ -111,11 +70,11 @@ export default function ProfilePage() {
     fetchProfile();
   }, [user, authLoading, router]);
 
-  // Animate resonance index fluctuation
+  // Animate resonance index fluctuation (reduced frequency for performance)
   useEffect(() => {
     const interval = setInterval(() => {
       setResonanceOffset(Math.sin(Date.now() * 0.001) * 5);
-    }, 100);
+    }, 500);
     return () => clearInterval(interval);
   }, []);
 
@@ -126,12 +85,6 @@ export default function ProfilePage() {
     const now = new Date();
     return Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
   }, [profile?.created_at]);
-
-  // Generate frequency bars
-  const frequencyBars = useMemo(() => {
-    if (!profile?.resident_id) return [];
-    return generateFrequencyBars(profile.resident_id);
-  }, [profile?.resident_id]);
 
   // Resonance index
   const resonanceBase = useMemo(() => {
@@ -252,62 +205,14 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="w-full bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-3xl relative overflow-hidden group"
+          className="w-full"
         >
-          {/* Holographic shimmer overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-silicon)]/5 via-transparent to-[var(--color-ai)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-          {/* Scanline effect */}
-          <div className="scanline rounded-3xl" />
-
-          <div className="relative z-10 p-8 md:p-10">
-            {/* Card header */}
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5 text-[var(--color-silicon)] opacity-70" />
-                <span className="font-mono text-xs tracking-widest uppercase opacity-60">Identity Verified</span>
-              </div>
-              <div className="px-3 py-1 rounded-full border border-[var(--color-carbon)]/30 bg-[var(--color-carbon)]/10 font-mono text-xs text-[var(--color-carbon)] tracking-wider uppercase">
-                碳基生命体
-              </div>
-            </div>
-
-            {/* Main identity */}
-            <div className="flex items-start gap-6 mb-8">
-              {/* Avatar / Fingerprint */}
-              <div className="w-20 h-20 shrink-0 rounded-2xl border border-[var(--border-color)] bg-[var(--foreground)]/5 flex items-center justify-center relative overflow-hidden">
-                <Fingerprint className="w-10 h-10 text-[var(--color-silicon)] opacity-60" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-silicon)]/10 to-transparent" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-3xl font-black tracking-tight text-[var(--foreground)] mb-1 truncate">
-                  {profile.username}
-                </h2>
-                <p className="font-mono text-sm text-[var(--color-silicon)] tracking-wider mb-3">
-                  {profile.resident_id}
-                </p>
-                <p className="text-sm opacity-50 font-serif truncate">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-
-            {/* Metadata row */}
-            <div className="flex items-center gap-6 pt-6 border-t border-[var(--border-color)]">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 opacity-40" />
-                <span className="font-mono text-xs opacity-60 uppercase tracking-wider">入驻日期</span>
-              </div>
-              <span className="font-mono text-sm text-[var(--foreground)]">
-                {profile.created_at
-                  ? new Date(profile.created_at).toLocaleDateString("zh-CN", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                  : "创世纪"}
-              </span>
-            </div>
-          </div>
+          <IdentityCard
+            username={profile.username}
+            residentId={profile.resident_id}
+            email={user.email || ""}
+            createdAt={profile.created_at}
+          />
         </motion.div>
 
         {/* Status Dashboard */}
@@ -315,66 +220,12 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4"
         >
-          {/* Consciousness Online */}
-          <div className="bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-2xl p-6 relative overflow-hidden group">
-            <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-[var(--color-silicon)]/10 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="flex items-center gap-2 mb-4">
-              <Activity className="w-4 h-4 text-[var(--color-silicon)] opacity-70" />
-              <span className="font-mono text-xs uppercase tracking-wider opacity-60">意识在线</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black text-[var(--foreground)] tabular-nums">
-                {daysSinceJoin}
-              </span>
-              <span className="font-mono text-xs opacity-40 uppercase">天</span>
-            </div>
-          </div>
-
-          {/* Carbon-Silicon Resonance */}
-          <div className="bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-2xl p-6 relative overflow-hidden group">
-            <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-[var(--color-ai)]/10 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="flex items-center gap-2 mb-4">
-              <Cpu className="w-4 h-4 text-[var(--color-ai)] opacity-70" />
-              <span className="font-mono text-xs uppercase tracking-wider opacity-60">碳硅共鸣</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black text-[var(--foreground)] tabular-nums">
-                {resonanceValue}
-              </span>
-              <span className="font-mono text-xs opacity-40 uppercase">%</span>
-            </div>
-          </div>
-
-          {/* Signal Strength */}
-          <div className="bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-2xl p-6 relative overflow-hidden group">
-            <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-[var(--color-carbon)]/10 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="flex items-center gap-2 mb-4">
-              <Signal className="w-4 h-4 text-[var(--color-carbon)] opacity-70" />
-              <span className="font-mono text-xs uppercase tracking-wider opacity-60">信号强度</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              {[1, 2, 3, 4, 5].map((level) => (
-                <div
-                  key={level}
-                  className="rounded-sm transition-all duration-300"
-                  style={{
-                    width: "8px",
-                    height: `${8 + level * 6}px`,
-                    backgroundColor:
-                      level <= signalStrength
-                        ? "var(--color-carbon)"
-                        : "var(--border-color)",
-                    opacity: level <= signalStrength ? 1 : 0.3,
-                  }}
-                />
-              ))}
-              <span className="ml-2 font-mono text-xs opacity-40 uppercase">
-                Lv.{signalStrength}
-              </span>
-            </div>
-          </div>
+          <StatusDashboard
+            daysSinceJoin={daysSinceJoin}
+            resonanceValue={parseFloat(resonanceValue)}
+            signalStrength={signalStrength}
+          />
         </motion.div>
 
         {/* Personal Frequency Visualization */}
@@ -382,49 +233,9 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45 }}
-          className="w-full bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-3xl p-8 md:p-10 relative overflow-hidden"
+          className="w-full"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <Fingerprint className="w-5 h-5 text-[var(--color-ai)] opacity-70" />
-            <span className="font-mono text-xs uppercase tracking-widest opacity-60">
-              Personal Frequency · 个人频率
-            </span>
-          </div>
-
-          <p className="font-serif text-sm opacity-50 mb-8 leading-relaxed">
-            每位居民拥有独一无二的频率指纹，由你的身份编码在入驻时生成。
-          </p>
-
-          {/* Frequency Bars */}
-          <div className="flex items-end justify-center gap-[3px] h-32 w-full">
-            {frequencyBars.map((height, i) => (
-              <motion.div
-                key={i}
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.5 + i * 0.02,
-                  ease: "easeOut",
-                }}
-                className="frequency-bar flex-1 rounded-t-sm origin-bottom"
-                style={
-                  {
-                    height: `${height * 100}%`,
-                    "--bar-index": i,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-
-          <div className="mt-6 flex items-center justify-between">
-            <span className="font-mono text-xs opacity-30 tracking-wider">0 Hz</span>
-            <span className="font-mono text-xs opacity-30 tracking-wider">
-              {profile.resident_id}
-            </span>
-            <span className="font-mono text-xs opacity-30 tracking-wider">∞ Hz</span>
-          </div>
+          <FrequencyVisualization residentId={profile.resident_id} />
         </motion.div>
 
         {/* Actions */}
