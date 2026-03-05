@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     description: '欢迎加入 Aetherwit 的社会实验。',
   },
 }
+
+export default function ContactLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}

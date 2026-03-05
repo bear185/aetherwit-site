@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     follow: false,
   },
 }
+
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}

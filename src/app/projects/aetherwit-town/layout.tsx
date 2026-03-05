@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     description: '纯硅基演算的 AI 小镇，碳硅共生的社会实验。',
   },
 }
+
+export default function AetherwitTownLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}

@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     description: '探索 Aetherwit 的实验项目：AI 小镇、人生图鉴等。',
   },
 }
+
+export default function ProjectsLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}

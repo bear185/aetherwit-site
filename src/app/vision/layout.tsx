@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     description: '拥抱硅基生命，共同构建碳硅共生的未来社会。',
   },
 }
+
+export default function VisionLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}

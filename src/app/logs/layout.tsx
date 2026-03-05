@@ -8,3 +8,11 @@ export const metadata: Metadata = {
     description: '记录碳硅共生宇宙的生长切片。',
   },
 }
+
+export default function LogsLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <>{children}</>
+}
