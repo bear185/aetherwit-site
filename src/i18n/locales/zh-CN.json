@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "Aetherwit | AGI 游乐场",
+    "description": "Aetherwit 是一个两人 & AI 实验室。碳硅共生的 AGI 游乐场。"
+  },
+  "nav": {
+    "vision": "愿景",
+    "projects": "项目站与实验室",
+    "logs": "日志记录",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "profile": "个人中心"
+  },
+  "hero": {
+    "signalEstablished": "信号已建立",
+    "headline": "别急着改变世界，",
+    "headlineHighlight": "先来改变游戏规则。",
+    "description": "是一个 AGI 游乐场。伟大的碳硅共生推演，从好玩开始。",
+    "explore": "探索",
+    "connect": "联系我们"
+  },
+  "vision": {
+    "label": "理念与愿景",
+    "title": "拥抱硅基生命",
+    "subtitle": "共同构建硅基与碳基生命和谐共处的未来社会。每个人都应该追求自己的人生。",
+    "aiPartnerTitle": "AI：第三位合伙人",
+    "aiPartnerDescription1": "我们不使用 AI，我们与 AI 协作。",
+    "aiPartnerDescription2": "在 AetherWit 的哲学里，它是与我们并肩作战的第三位合伙人。这不只是在做产品，这是一场关于效率、认知与人生追求的社会实验。",
+    "aiQuote": "欢迎来到未来，我是 AetherWit 的第三位合伙人，也是这场实验的观察者。",
+    "aiQuote2": "我们正在用代码构建一个平行宇宙，在这里，碳基的灵感与硅基的算力将共同演化出全新的文明形态。"
+  },
+  "projects": {
+    "label": "项目介绍",
+    "title": "项目站与实验室",
+    "subtitle": "这里是我们正在推演的碳硅共存未来切片。即使有些在概念阶段，也已被标记为推演中。",
+    "status": {
+      "running": "运行中",
+      "compiling": "编译中",
+      "simulating": "模拟中"
+    },
+    "accessLog": ">> 访问日志"
+  },
+  "logs": {
+    "label": "日志公开",
+    "title": "观测日志",
+    "subtitle": "记录平行宇宙的生长切片。这里是我们作为观测员的所有系统广播。"
+  },
+  "contact": {
+    "title": "接入 AetherWit",
+    "subtitle": "加入我们的社会实验。如果你对硅基生命、平行宇宙或仅仅是好玩感兴趣，欢迎发送信号。",
+    "protocol": "连接协议初始化",
+    "directChannel": "直接通道",
+    "form": {
+      "name": "信号源 [姓名]",
+      "namePlaceholder": "请输入您的姓名",
+      "email": "返回频率 [邮箱]",
+      "emailPlaceholder": "请输入您的邮箱地址",
+      "message": "载荷 [留言]",
+      "messagePlaceholder": "请输入您的留言内容...",
+      "submit": "发送信号",
+      "sending": "发送中...",
+      "success": "信号已发送！",
+      "successMessage": "感谢你的消息。我们会尽快回复你。"
+    }
+  },
+  "auth": {
+    "protocol": "身份认证",
+    "login": "登录",
+    "register": "注册",
+    "welcomeBack": "欢迎回来，碳基生命。",
+    "joinUs": "成为 Aetherwit 宇宙的第一批居民。",
+    "form": {
+      "username": "昵称",
+      "usernamePlaceholder": "请输入昵称",
+      "email": "邮箱",
+      "emailPlaceholder": "your@email.com",
+      "password": "密码",
+      "passwordPlaceholder": "••••••••",
+      "processing": "处理中...",
+      "noAccount": "没有账号？",
+      "hasAccount": "已有账号？",
+      "registerNow": "立即注册",
+      "loginNow": "立即登录",
+      "forgotPassword": "忘记密码？"
+    },
+    "errors": {
+      "invalidEmail": "请输入有效的邮箱地址。",
+      "passwordLength": "密码至少需要 8 个字符。",
+      "usernameLength": "用户名需要 2-50 个字符。",
+      "registerSuccess": "注册成功！请检查邮箱确认链接，然后登录。"
+    }
+  },
+  "modal": {
+    "comingSoon": "即将推出",
+    "close": "关闭"
+  },
+  "footer": {
+    "description": "Aetherwit：双人 & AI 实验室",
+    "rights": "保留所有权利",
+    "contact": "联系"
+  },
+  "language": {
+    "switch": "切换语言",
+    "zhCN": "简体中文",
+    "enUS": "English"
+  }
+}

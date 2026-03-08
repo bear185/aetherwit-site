@@ -12,7 +12,7 @@ export default function Logs() {
 
         <PageHeader
           icon={Radio}
-          label="Build in Public"
+          label="日志公开"
           title="观测日志"
           subtitle="记录平行宇宙的生长切片。这里是我们作为观测员的所有系统广播。"
         />

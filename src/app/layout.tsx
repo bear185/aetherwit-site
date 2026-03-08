@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -68,11 +69,14 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSerif.variable} ${firaCode.variable} antialiased min-h-screen relative selection:bg-[var(--color-silicon)]/30 selection:text-current`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange={false}>
           <AuthProvider>
             <div className="scanline"></div>
             <Navbar />
-            <ThemeToggle />
+            <div className="fixed top-24 right-4 z-50 flex flex-col gap-3">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
             <div className="flex flex-col min-h-screen">
               <div className="flex-grow">{children}</div>
               <Footer />

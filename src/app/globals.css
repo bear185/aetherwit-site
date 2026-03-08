@@ -49,6 +49,26 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-silicon);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-silicon);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Cursor pointer for interactive elements */
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /* Custom Effects */
 .terminal-cursor {
   animation: blink 1s step-start infinite;

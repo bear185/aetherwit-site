@@ -92,7 +92,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
                   <span className="text-3xl">🔒</span>
                 </div>
                 <h3 id="modal-title" className="text-2xl font-bold font-sans mb-4 text-[var(--foreground)]">{title}</h3>
-                <p className="font-mono text-sm opacity-60 mb-6 uppercase tracking-widest">Coming Soon</p>
+                <p className="font-mono text-sm opacity-60 mb-6 uppercase tracking-widest">即将推出</p>
                 <div className="p-4 bg-[var(--foreground)]/5 rounded-lg border border-[var(--border-color)]">
                   <p className="font-serif text-lg opacity-90 italic">
                     "{children}"

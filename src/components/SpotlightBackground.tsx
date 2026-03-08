@@ -19,8 +19,36 @@ export function SpotlightBackground() {
       containerRef.current.style.setProperty("--y", `${y}px`);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    // Touch support for mobile
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!containerRef.current || e.touches.length === 0) return;
+      
+      const touch = e.touches[0];
+      const { left, top } = containerRef.current.getBoundingClientRect();
+      
+      const x = touch.clientX - left;
+      const y = touch.clientY - top;
+      
+      containerRef.current.style.setProperty("--x", `${x}px`);
+      containerRef.current.style.setProperty("--y", `${y}px`);
+    };
+
+    // Only add mouse events on non-touch devices
+    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    
+    if (!isTouchDevice) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+    
+    // Add touch events for all devices
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchstart", handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchstart", handleTouchMove);
+    };
   }, []);
 
   return (

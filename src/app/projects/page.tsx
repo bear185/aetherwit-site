@@ -26,7 +26,7 @@ export default function Projects() {
 
         <PageHeader
           icon={Cpu}
-          label="Active Nodes"
+          label="项目介绍"
           title="项目站与实验室"
           subtitle="这里是我们正在推演的碳硅共存未来切片。即使有些在概念阶段，也已被标记为推演中。"
         />

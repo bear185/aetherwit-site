@@ -18,21 +18,22 @@ export function ExperimentCard({ id, title, status, description }: ExperimentCar
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="border border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-xl p-8 rounded-2xl font-mono relative overflow-hidden group hover:border-current transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.05)]"
+      className="cursor-pointer border border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-xl p-8 rounded-2xl font-mono relative overflow-hidden group hover:border-current transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.05)] will-change-transform"
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       {/* Subtle glow effect behind the card on hover */}
       <div className={`absolute inset-0 bg-gradient-to-br from-transparent to-transparent ${hoverGlow} transition-all duration-500 pointer-events-none z-0`} />
       
       <div className="relative z-10 flex justify-between items-start mb-6 border-b border-[var(--border-color)] pb-4">
         <span className="opacity-60 text-xs md:text-sm font-mono tracking-wider">{id}</span>
-        <div className={`flex items-center gap-2 text-xs font-bold tracking-widest uppercase ${statusColor}`}>
-          <motion.div
-            animate={{ opacity: [1, 0.2, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className={`w-2 h-2 rounded-full ${dotColor}`}
-          />
-          {status}
-        </div>
+          <div className={`flex items-center gap-2 text-xs font-bold tracking-widest uppercase ${statusColor}`}>
+            <motion.div
+              animate={{ opacity: [1, 0.2, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              className={`w-2 h-2 rounded-full ${dotColor}`}
+            />
+            {status === "Running" ? "运行中" : status === "Compiling..." ? "编译中" : "模拟中"}
+          </div>
       </div>
       
       <h3 className="relative z-10 text-2xl font-bold mb-4 font-sans text-[var(--foreground)] group-hover:text-[var(--foreground)] transition-colors">

@@ -22,7 +22,7 @@ export function IdentityCard({ username, residentId, email, createdAt }: Identit
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Shield className="w-5 h-5 text-[var(--color-silicon)] opacity-70" />
-            <span className="font-mono text-xs tracking-widest uppercase opacity-60">Identity Verified</span>
+            <span className="font-mono text-xs tracking-widest uppercase opacity-60">身份已验证</span>
           </div>
           <div className="px-3 py-1 rounded-full border border-[var(--color-carbon)]/30 bg-[var(--color-carbon)]/10 font-mono text-xs text-[var(--color-carbon)] tracking-wider uppercase">
             碳基生命体

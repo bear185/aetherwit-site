@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Terminal, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
-import { createUserProfile } from "@/actions/profile";
 import { isValidEmail, sanitizeText } from "@/lib/utils";
 
 export default function Auth() {
@@ -60,7 +59,7 @@ export default function Auth() {
         router.refresh();
       }
     } else {
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -73,15 +72,6 @@ export default function Auth() {
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        if (data.user) {
-          // Create profile via Server Action (moved to server-side)
-          const profileResult = await createUserProfile(data.user.id, username);
-          if (!profileResult.success) {
-            console.error("Profile creation failed:", profileResult.error);
-            // Don't block signup, but log the error
-          }
-        }
-        
         setMessage("注册成功！请检查邮箱确认链接，然后登录。");
         setIsLogin(true);
       }
@@ -103,11 +93,11 @@ export default function Auth() {
           
           <div className="flex items-center gap-3 mb-8 text-[var(--color-silicon)] font-mono text-sm tracking-widest uppercase">
             <Terminal className="w-4 h-4" />
-            <span>Identity Protocol</span>
+            <span>身份认证</span>
           </div>
 
           <h1 className="text-3xl font-black tracking-tighter mb-2 text-[var(--foreground)]">
-            {isLogin ? "登录 (Login)" : "注册 (Register)"}
+            {isLogin ? "登录" : "注册"}
           </h1>
           <p className="text-sm opacity-60 mb-8 font-serif">
             {isLogin 
@@ -131,7 +121,7 @@ export default function Auth() {
             {!isLogin && (
               <div>
                 <label htmlFor="auth-username" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
-                  昵称 / Username
+                  昵称
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
@@ -152,7 +142,7 @@ export default function Auth() {
             
             <div>
               <label htmlFor="auth-email" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
-                邮箱 / Email
+                邮箱
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
@@ -171,7 +161,7 @@ export default function Auth() {
 
             <div>
               <label htmlFor="auth-password" className="block text-xs font-mono uppercase tracking-wider opacity-60 mb-2">
-                密码 / Password
+                密码
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-30" />
@@ -199,11 +189,11 @@ export default function Auth() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Processing...</span>
+                  <span>处理中...</span>
                 </>
               ) : (
                 <>
-                  {isLogin ? "接入 (Login)" : "注册 (Register)"}
+                  {isLogin ? "登录" : "注册"}
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}

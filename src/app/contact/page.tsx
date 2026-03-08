@@ -41,7 +41,7 @@ export default function Contact() {
           
           <div className="flex items-center gap-3 mb-8 text-[var(--color-carbon)] font-mono text-sm tracking-widest uppercase">
             <Terminal className="w-4 h-4" />
-            <span>Connection Protocol Init</span>
+            <span>连接协议初始化</span>
           </div>
 
           {!submitted ? (
@@ -56,7 +56,7 @@ export default function Contact() {
               <div className="mb-10 p-6 bg-[var(--foreground)]/5 rounded-xl border border-[var(--border-color)]">
                 <div className="flex items-center gap-3 mb-2 text-[var(--color-silicon)]">
                   <Mail className="w-5 h-5" />
-                  <span className="font-mono text-sm uppercase tracking-widest opacity-60">Direct Channel</span>
+                  <span className="font-mono text-sm uppercase tracking-widest opacity-60">直接通道</span>
                 </div>
                 <a 
                   href="mailto:hi@aetherwit.com" 
@@ -68,31 +68,31 @@ export default function Contact() {
 
               <form className="space-y-6 flex flex-col" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-2 font-mono">
-                  <label className="text-sm opacity-60 uppercase tracking-widest">Signal Source [Name]</label>
+                  <label className="text-sm opacity-60 uppercase tracking-widest">信号源 [姓名]</label>
                   <input 
                     type="text" 
                     name="name"
                     required
                     maxLength={100}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-silicon)] py-2 outline-none transition-colors text-[var(--foreground)]" 
-                    placeholder="Enter your designator" 
+                    placeholder="请输入您的姓名" 
                   />
                 </div>
                 
                 <div className="flex flex-col gap-2 font-mono">
-                  <label className="text-sm opacity-60 uppercase tracking-widest">Return Frequency [Email]</label>
+                  <label className="text-sm opacity-60 uppercase tracking-widest">返回频率 [邮箱]</label>
                   <input 
                     type="email" 
                     name="email"
                     required
                     maxLength={255}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-carbon)] py-2 outline-none transition-colors text-[var(--foreground)]" 
-                    placeholder="Where to send response" 
+                    placeholder="请输入您的邮箱地址" 
                   />
                 </div>
                 
                 <div className="flex flex-col gap-2 font-mono">
-                  <label className="text-sm opacity-60 uppercase tracking-widest">Payload [Message]</label>
+                  <label className="text-sm opacity-60 uppercase tracking-widest">载荷 [留言]</label>
                   <textarea 
                     name="message"
                     rows={4} 
@@ -100,7 +100,7 @@ export default function Contact() {
                     minLength={10}
                     maxLength={2000}
                     className="w-full bg-transparent border-b border-[var(--border-color)] focus:border-[var(--color-ai)] py-2 outline-none transition-colors resize-none text-[var(--foreground)]" 
-                    placeholder="Transmit your ideas..." 
+                    placeholder="请输入您的留言内容..." 
                   ></textarea>
                 </div>
 
@@ -123,7 +123,7 @@ export default function Contact() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span className="font-bold">发送信号 (Transmit Signal)</span>
+                      <span className="font-bold">发送信号</span>
                     </>
                   )}
                 </motion.button>

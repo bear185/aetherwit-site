@@ -12,7 +12,7 @@ export default function Vision() {
 
         <PageHeader
           icon={Radio}
-          label="Philosophy & Vision"
+          label="理念与愿景"
           title="拥抱硅基生命"
           subtitle="共同构建硅基与碳基生命和谐共处的未来社会。每个人都应该追求自己的人生。"
           accentColor="var(--color-carbon)"

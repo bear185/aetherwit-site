@@ -15,7 +15,7 @@ export function HeroSection() {
       >
         <div className="flex items-center gap-3 mb-8 opacity-60 font-mono text-sm tracking-widest text-[var(--color-silicon)] uppercase">
           <Radio className="w-4 h-4 animate-pulse" />
-          <span>Signal Established</span>
+          <span>信号已建立</span>
         </div>
 
         <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 text-[var(--foreground)] leading-[1.1]">
@@ -36,7 +36,7 @@ export function HeroSection() {
               className="group relative flex items-center justify-center gap-3 bg-[var(--foreground)] text-[var(--background)] font-mono px-10 py-5 uppercase tracking-widest text-base hover:bg-[var(--color-silicon)] hover:text-white transition-all rounded-sm shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_40px_rgba(0,163,255,0.3)] w-full sm:w-auto"
             >
               <Terminal className="w-5 h-5 group-hover:animate-pulse" />
-              <span className="font-bold">探索 (Explore)</span>
+              <span className="font-bold">探索</span>
               <span className="terminal-cursor">_</span>
             </motion.button>
           </Link>
@@ -48,7 +48,7 @@ export function HeroSection() {
               className="group relative flex items-center justify-center gap-3 bg-transparent border-2 border-[var(--border-color)] text-[var(--foreground)] font-mono px-10 py-5 uppercase tracking-widest text-base hover:border-[var(--color-carbon)] hover:text-[var(--color-carbon)] transition-all rounded-sm w-full sm:w-auto"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
-              <span className="font-bold">接入 (Connect)</span>
+              <span className="font-bold">联系我们</span>
             </motion.button>
           </Link>
         </div>
